@@ -283,6 +283,60 @@
     <span>正在處理書籤並連接 AI...</span>
   </div>
 
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">設定</h3>
+        <button class="close-button" id="closeSettingsButton">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Settings content will go here -->
+      </div>
+      <div class="modal-footer">
+        <button class="save-button" id="saveSettingsButton">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="helpModalTitle">使用說明</h3>
+        <button class="close-button" id="closeHelpButton">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="help-content">
+          <div class="help-section">
+            <div class="help-title" id="helpSearchTitle">搜尋功能</div>
+            <p id="helpSearchText">在搜尋框中輸入關鍵字，然後點擊「精確搜尋」按鈕，將會在選定的 AI 服務中開啟一個新標籤頁，並自動填入您的書籤資料和搜尋提示。精確搜尋會尋找完全符合關鍵字的書籤。</p>
+          </div>
+          <div class="help-section">
+            <div class="help-title" id="helpOrganizeTitle">關聯查找</div>
+            <p id="helpOrganizeText">點擊「關聯查找」按鈕，AI 將會分析您的書籤，找出與關鍵字相關的所有書籤，並將它們整理成表格形式。</p>
+          </div>
+          <div class="help-section">
+            <div class="help-title" id="helpCopyTitle">複製 Prompt</div>
+            <p id="helpCopyText">如果您想手動將提示複製到剪貼簿，可以點擊「複製 Prompt」按鈕。然後您可以將其貼上到任何 AI 服務中。</p>
+          </div>
+          <div class="help-section">
+            <div class="help-title" id="helpAITitle">AI 服務選擇</div>
+            <p id="helpAIText">您可以從下拉選單中選擇不同的 AI 服務（Grok、Gemini 或 OpenAI）。推薦使用grok 。</p>
+          </div>
+          <div class="help-section">
+            <div class="help-title" id="helpLanguageTitle">語言設定</div>
+            <p id="helpLanguageText">您可以從語言下拉選單中選擇中文或英文界面。</p>
+          </div>
+          <hr>
+          <div class="help-section" style="text-align: right; font-style: italic;">
+            <p id="helpAuthorText">作者: bahfahh</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>

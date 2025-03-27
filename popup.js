@@ -47,7 +47,18 @@ document.addEventListener('DOMContentLoaded', function() {
       promptOrganize: '整理分類相關的書籤,整理成表格形式。用table 整理先歸類 然後欄位是 \ntitle , explain,url .url 要是超連結可以直接點選\n用表情符號來區隔不同的分類，讓表格更具視覺區分效果並保持清晰。\n',
       promptIntro: '你幫我找到關於內容是[{searchTerm}] \n\n',
       promptBookmarkIntro: '以下是書籤\n[bookmark]\n',
-      promptBookmarkOutro: '[/bookmark]'
+      promptBookmarkOutro: '[/bookmark]',
+      // Help modal translations
+      helpModalTitle: '使用說明',
+      helpSearchTitle: '精確搜尋',
+      helpSearchText: '輸入關鍵字後點擊「精確搜尋」，ai會找和搜尋關鍵字最相關聯的書籤',
+      helpOrganizeTitle: '關聯查找',
+      helpOrganizeText: '點擊此按鈕，AI會找出相關書籤並整理成表格。',
+      helpCopyTitle: '複製 Prompt',
+      helpCopyText: '點擊此按鈕複製提示到剪貼簿，可貼上到任何AI服務。',
+      helpAITitle: 'AI 服務',
+      helpAIText: '選擇AI服務（推薦使用Grok）。',
+      helpAuthorText: '作者: bahfahh'
     },
     en: {
       appTitle: 'Bookmark AI Search',
@@ -74,7 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
       promptOrganize: 'Organize and categorize related bookmarks in a table format. Use tables to categorize with columns for \ntitle, explain, and url. URLs should be clickable hyperlinks.\nUse emojis to separate different categories for better visual distinction while maintaining clarity.\n',
       promptIntro: 'Please help me find content related to [{searchTerm}] \n\n',
       promptBookmarkIntro: 'Here are my bookmarks:\n[bookmark]\n',
-      promptBookmarkOutro: '[/bookmark]'
+      promptBookmarkOutro: '[/bookmark]',
+      // Help modal translations
+      helpModalTitle: 'User Guide',
+      helpSearchTitle: 'Precise Search',
+      helpSearchText: 'After entering keywords and clicking "Precise Search", AI will find bookmarks most relevant to your search keywords.',
+      helpOrganizeTitle: 'Related Search',
+      helpOrganizeText: 'Click this button to find related bookmarks and organize them in a table format.',
+      helpCopyTitle: 'Copy Prompt',
+      helpCopyText: 'Click to copy the prompt to clipboard for pasting into any AI service.',
+      helpAITitle: 'AI Service',
+      helpAIText: 'Select an AI service (Grok recommended).',
+      helpAuthorText: 'Author: bahfahh'
     }
   };
 
@@ -83,6 +105,29 @@ document.addEventListener('DOMContentLoaded', function() {
   aiSelect.value = 'grok';
   loadLanguagePreference();
   fetchAllBookmarks();
+
+  // Get modal elements
+  const helpButton = document.getElementById('helpButton');
+  const helpModal = document.getElementById('helpModal');
+  const closeHelpButton = document.getElementById('closeHelpButton');
+  const settingsButton = document.getElementById('settingsButton');
+  const settingsModal = document.getElementById('settingsModal');
+  const closeSettingsButton = document.getElementById('closeSettingsButton');
+  const saveSettingsButton = document.getElementById('saveSettingsButton');
+
+  // Help modal elements
+  const helpModalTitle = document.getElementById('helpModalTitle');
+  const helpSearchTitle = document.getElementById('helpSearchTitle');
+  const helpSearchText = document.getElementById('helpSearchText');
+  const helpOrganizeTitle = document.getElementById('helpOrganizeTitle');
+  const helpOrganizeText = document.getElementById('helpOrganizeText');
+  const helpCopyTitle = document.getElementById('helpCopyTitle');
+  const helpCopyText = document.getElementById('helpCopyText');
+  const helpAITitle = document.getElementById('helpAITitle');
+  const helpAIText = document.getElementById('helpAIText');
+  const helpLanguageTitle = document.getElementById('helpLanguageTitle');
+  const helpLanguageText = document.getElementById('helpLanguageText');
+  const helpAuthorText = document.getElementById('helpAuthorText');
 
   // Add event listeners to buttons
   searchButton.addEventListener('click', function() {
@@ -97,11 +142,43 @@ document.addEventListener('DOMContentLoaded', function() {
     copyPromptToClipboard();
   });
 
+  // Help button event listener
+  helpButton.addEventListener('click', function() {
+    helpModal.style.display = 'block';
+    updateHelpLanguage();
+  });
+
+  // Close help modal when clicking the close button
+  closeHelpButton.addEventListener('click', function() {
+    helpModal.style.display = 'none';
+  });
+
+  // Settings button event listener
+  settingsButton.addEventListener('click', function() {
+    settingsModal.style.display = 'block';
+  });
+
+  // Close settings modal when clicking the close button
+  closeSettingsButton.addEventListener('click', function() {
+    settingsModal.style.display = 'none';
+  });
+
+  // Close modals when clicking outside of them
+  window.addEventListener('click', function(event) {
+    if (event.target === helpModal) {
+      helpModal.style.display = 'none';
+    }
+    if (event.target === settingsModal) {
+      settingsModal.style.display = 'none';
+    }
+  });
+
   // Add event listener for language change
   languageSelect.addEventListener('change', function() {
     currentLanguage = languageSelect.value;
     saveLanguagePreference();
     updateUILanguage();
+    updateHelpLanguage();
   });
 
   // Function to copy prompt to clipboard
@@ -172,6 +249,25 @@ document.addEventListener('DOMContentLoaded', function() {
       statusMessage.textContent = lang.statusBookmarksReady;
       statusMessage.classList.remove('status-error');
     }
+  }
+
+  // Function to update help modal language
+  function updateHelpLanguage() {
+    const lang = translations[currentLanguage];
+
+    // Update help modal content
+    helpModalTitle.textContent = lang.helpModalTitle;
+    helpSearchTitle.textContent = lang.helpSearchTitle;
+    helpSearchText.textContent = lang.helpSearchText;
+    helpOrganizeTitle.textContent = lang.helpOrganizeTitle;
+    helpOrganizeText.textContent = lang.helpOrganizeText;
+    helpCopyTitle.textContent = lang.helpCopyTitle;
+    helpCopyText.textContent = lang.helpCopyText;
+    helpAITitle.textContent = lang.helpAITitle;
+    helpAIText.textContent = lang.helpAIText;
+    helpLanguageTitle.textContent = lang.helpLanguageTitle;
+    helpLanguageText.textContent = lang.helpLanguageText;
+    helpAuthorText.textContent = lang.helpAuthorText;
   }
 
   // Function to get translated text
