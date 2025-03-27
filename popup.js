@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
       searchInputPlaceholder: '輸入搜尋關鍵字查找關聯書籤 ',
       aiSelectLabel: '選擇 AI 服務:',
       languageSelectLabel: '語言 / Language:',
-      searchButton: '搜尋',
-      organizeButton: '整理',
+      searchButton: '精確搜尋',
+      organizeButton: '關聯查找',
       copyPromptButton: '複製 Prompt',
       copySuccess: 'Prompt 已複製到剪貼簿！',
       copyFailed: '複製失敗，請重試',
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
       loadingText: '正在處理書籤並連接 AI...',
       searchAction: '搜尋',
       organizeAction: '整理',
-      promptSearch: '找出相關的書籤並列出，按相關性排序。\n請提供每個書籤的簡短說明和URL (保持為可點擊的連結)。\n',
+      promptSearch: '精準查找 必須是完全符合主題的書籤\n分類相關的書籤,整理成表格形式。用table 整理先歸類 然後欄位是 \ntitle , explain,url .url 要是超連結可以直接點選\n用表情符號來區隔不同的分類，讓表格更具視覺區分效果並保持清晰。\n',
       promptOrganize: '整理分類相關的書籤,整理成表格形式。用table 整理先歸類 然後欄位是 \ntitle , explain,url .url 要是超連結可以直接點選\n用表情符號來區隔不同的分類，讓表格更具視覺區分效果並保持清晰。\n',
       promptIntro: '你幫我找到關於內容是[{searchTerm}] \n\n',
       promptBookmarkIntro: '以下是書籤\n[bookmark]\n',
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
       searchInputPlaceholder: 'Enter search keywords (e.g.: python, machine learning)',
       aiSelectLabel: 'Select AI Service:',
       languageSelectLabel: 'Language / 語言:',
-      searchButton: 'Search',
-      organizeButton: 'Organize',
+      searchButton: 'Precise Search',
+      organizeButton: 'Related Search',
       copyPromptButton: 'Copy Prompt',
       copySuccess: 'Prompt copied to clipboard!',
       copyFailed: 'Copy failed, please try again',
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
       loadingText: 'Processing bookmarks and connecting to AI...',
       searchAction: 'search',
       organizeAction: 'organize',
-      promptSearch: 'Find related bookmarks and list them, sorted by relevance.\nProvide a brief description and URL for each bookmark (keep URLs as clickable links).\n',
+      promptSearch: 'Precise search for bookmarks that exactly match the topic.\nCategorize related bookmarks in a table format. Use tables to organize with columns for \ntitle, explain, and url. URLs should be clickable hyperlinks.\nUse emojis to separate different categories for better visual distinction while maintaining clarity.\n',
       promptOrganize: 'Organize and categorize related bookmarks in a table format. Use tables to categorize with columns for \ntitle, explain, and url. URLs should be clickable hyperlinks.\nUse emojis to separate different categories for better visual distinction while maintaining clarity.\n',
       promptIntro: 'Please help me find content related to [{searchTerm}] \n\n',
       promptBookmarkIntro: 'Here are my bookmarks:\n[bookmark]\n',
@@ -79,6 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // Initialize
+  // Set default AI to Grok
+  aiSelect.value = 'grok';
   loadLanguagePreference();
   fetchAllBookmarks();
 
