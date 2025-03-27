@@ -58,7 +58,19 @@ document.addEventListener('DOMContentLoaded', function() {
       helpCopyText: '點擊此按鈕複製提示到剪貼簿，可貼上到任何AI服務。',
       helpAITitle: 'AI 服務',
       helpAIText: '選擇AI服務（推薦使用Grok）。',
-      helpAuthorText: '作者: bahfahh'
+      helpAuthorText: '作者: bahfahh',
+      // Settings modal translations
+      settingsTitle: '設定',
+      shortcutSettingsTitle: '快捷鍵設定',
+      enableShortcutLabel: '啟用快捷鍵 (Ctrl+Q)',
+      shortcutNote: '注意：要更改快捷鍵，請前往 Chrome 選單 > 擴充功能 > 鍵盤快捷鍵',
+      promptSettingsTitle: '提示詞設定',
+      promptSearchLabel: '精確搜尋提示詞:',
+      promptOrganizeLabel: '關聯查找提示詞:',
+      resetPromptsButton: '重置為預設值',
+      saveSettingsButton: '儲存',
+      settingsSaved: '設定已儲存',
+      settingsError: '儲存設定時發生錯誤'
     },
     en: {
       appTitle: 'Bookmark AI Search',
@@ -96,7 +108,19 @@ document.addEventListener('DOMContentLoaded', function() {
       helpCopyText: 'Click to copy the prompt to clipboard for pasting into any AI service.',
       helpAITitle: 'AI Service',
       helpAIText: 'Select an AI service (Grok recommended).',
-      helpAuthorText: 'Author: bahfahh'
+      helpAuthorText: 'Author: bahfahh',
+      // Settings modal translations
+      settingsTitle: 'Settings',
+      shortcutSettingsTitle: 'Keyboard Shortcut Settings',
+      enableShortcutLabel: 'Enable Keyboard Shortcut (Ctrl+Q)',
+      shortcutNote: 'Note: To change the shortcut, go to Chrome menu > Extensions > Keyboard shortcuts',
+      promptSettingsTitle: 'Prompt Settings',
+      promptSearchLabel: 'Precise Search Prompt:',
+      promptOrganizeLabel: 'Related Search Prompt:',
+      resetPromptsButton: 'Reset to Default',
+      saveSettingsButton: 'Save',
+      settingsSaved: 'Settings saved',
+      settingsError: 'Error saving settings'
     }
   };
 
@@ -128,58 +152,95 @@ document.addEventListener('DOMContentLoaded', function() {
   const helpLanguageTitle = document.getElementById('helpLanguageTitle');
   const helpLanguageText = document.getElementById('helpLanguageText');
   const helpAuthorText = document.getElementById('helpAuthorText');
+// Settings modal elements
+const settingsTitle = document.querySelector('.modal-title');
+const shortcutSettingsTitle = document.getElementById('shortcutSettingsTitle');
+const enableShortcutLabel = document.getElementById('enableShortcutLabel');
+const shortcutEnabledCheckbox = document.getElementById('shortcutEnabledCheckbox');
+const promptSettingsTitle = document.getElementById('promptSettingsTitle');
+const promptSearchLabel = document.getElementById('promptSearchLabel');
+const promptSearchTextarea = document.getElementById('promptSearchTextarea');
+const promptOrganizeLabel = document.getElementById('promptOrganizeLabel');
+const promptOrganizeTextarea = document.getElementById('promptOrganizeTextarea');
+const resetPromptsButton = document.getElementById('resetPromptsButton');
 
-  // Add event listeners to buttons
-  searchButton.addEventListener('click', function() {
-    processUserRequest('search');
-  });
+// Custom prompts storage
+let customPromptSearch = '';
+let customPromptOrganize = '';
+let shortcutEnabled = true;
 
-  organizeButton.addEventListener('click', function() {
-    processUserRequest('organize');
-  });
+// Add event listeners to buttons
+searchButton.addEventListener('click', function() {
+  processUserRequest('search');
+});
 
-  copyPromptButton.addEventListener('click', function() {
-    copyPromptToClipboard();
-  });
+organizeButton.addEventListener('click', function() {
+  processUserRequest('organize');
+});
 
-  // Help button event listener
-  helpButton.addEventListener('click', function() {
-    helpModal.style.display = 'block';
-    updateHelpLanguage();
-  });
+copyPromptButton.addEventListener('click', function() {
+  copyPromptToClipboard();
+});
 
-  // Close help modal when clicking the close button
-  closeHelpButton.addEventListener('click', function() {
+// Help button event listener
+helpButton.addEventListener('click', function() {
+  helpModal.style.display = 'block';
+  updateHelpLanguage();
+});
+
+// Close help modal when clicking the close button
+closeHelpButton.addEventListener('click', function() {
+  helpModal.style.display = 'none';
+});
+
+// Settings button event listener
+settingsButton.addEventListener('click', function() {
+  settingsModal.style.display = 'block';
+  loadSettings();
+  updateSettingsLanguage();
+});
+
+// Close settings modal when clicking the close button
+closeSettingsButton.addEventListener('click', function() {
+  settingsModal.style.display = 'none';
+});
+
+// Close modals when clicking outside of them
+window.addEventListener('click', function(event) {
+  if (event.target === helpModal) {
     helpModal.style.display = 'none';
-  });
-
-  // Settings button event listener
-  settingsButton.addEventListener('click', function() {
-    settingsModal.style.display = 'block';
-  });
-
-  // Close settings modal when clicking the close button
-  closeSettingsButton.addEventListener('click', function() {
+  }
+  if (event.target === settingsModal) {
     settingsModal.style.display = 'none';
-  });
+  }
+});
 
-  // Close modals when clicking outside of them
-  window.addEventListener('click', function(event) {
-    if (event.target === helpModal) {
-      helpModal.style.display = 'none';
-    }
-    if (event.target === settingsModal) {
-      settingsModal.style.display = 'none';
-    }
-  });
+// Add event listener for language change
+languageSelect.addEventListener('change', function() {
+  currentLanguage = languageSelect.value;
+  saveLanguagePreference();
+  updateUILanguage();
+  updateHelpLanguage();
+  updateSettingsLanguage();
+});
 
-  // Add event listener for language change
-  languageSelect.addEventListener('change', function() {
-    currentLanguage = languageSelect.value;
-    saveLanguagePreference();
-    updateUILanguage();
-    updateHelpLanguage();
-  });
+// Save settings button event listener
+saveSettingsButton.addEventListener('click', function() {
+  saveSettings();
+  settingsModal.style.display = 'none';
+  statusMessage.textContent = getText('settingsSaved');
+  statusMessage.classList.remove('status-error');
+});
+
+// Reset prompts button event listener
+resetPromptsButton.addEventListener('click', function() {
+  resetPromptsToDefault();
+});
+
+// Shortcut enabled checkbox event listener
+shortcutEnabledCheckbox.addEventListener('change', function() {
+  // Just update the enabled state
+});
 
   // Function to copy prompt to clipboard
   function copyPromptToClipboard() {
@@ -270,6 +331,68 @@ document.addEventListener('DOMContentLoaded', function() {
     helpAuthorText.textContent = lang.helpAuthorText;
   }
 
+  // Function to update settings modal language
+  function updateSettingsLanguage() {
+    const lang = translations[currentLanguage];
+
+    // Update settings modal content
+    settingsTitle.textContent = lang.settingsTitle;
+    shortcutSettingsTitle.textContent = lang.shortcutSettingsTitle;
+    enableShortcutLabel.textContent = lang.enableShortcutLabel;
+    document.getElementById('shortcutNote').textContent = lang.shortcutNote;
+    promptSettingsTitle.textContent = lang.promptSettingsTitle;
+    promptSearchLabel.textContent = lang.promptSearchLabel;
+    promptOrganizeLabel.textContent = lang.promptOrganizeLabel;
+    resetPromptsButton.textContent = lang.resetPromptsButton;
+    saveSettingsButton.textContent = lang.saveSettingsButton;
+  }
+
+  // Function to load settings
+  function loadSettings() {
+    chrome.storage.sync.get({
+      shortcutEnabled: true,
+      customPromptSearch: translations[currentLanguage].promptSearch,
+      customPromptOrganize: translations[currentLanguage].promptOrganize
+    }, function(items) {
+      shortcutEnabled = items.shortcutEnabled;
+      customPromptSearch = items.customPromptSearch;
+      customPromptOrganize = items.customPromptOrganize;
+
+      // Update UI
+      shortcutEnabledCheckbox.checked = shortcutEnabled;
+      promptSearchTextarea.value = customPromptSearch;
+      promptOrganizeTextarea.value = customPromptOrganize;
+    });
+  }
+
+  // Function to save settings
+  function saveSettings() {
+    shortcutEnabled = shortcutEnabledCheckbox.checked;
+    customPromptSearch = promptSearchTextarea.value;
+    customPromptOrganize = promptOrganizeTextarea.value;
+
+    chrome.storage.sync.set({
+      shortcutEnabled: shortcutEnabled,
+      customPromptSearch: customPromptSearch,
+      customPromptOrganize: customPromptOrganize
+    }, function() {
+      // Update keyboard shortcut settings
+      chrome.runtime.sendMessage({
+        action: 'registerShortcut',
+        enabled: shortcutEnabled
+      });
+
+      statusMessage.textContent = getText('settingsSaved');
+      statusMessage.classList.remove('status-error');
+    });
+  }
+
+  // Function to reset prompts to default
+  function resetPromptsToDefault() {
+    promptSearchTextarea.value = translations[currentLanguage].promptSearch;
+    promptOrganizeTextarea.value = translations[currentLanguage].promptOrganize;
+  }
+
   // Function to get translated text
   function getText(key, replacements = {}) {
     let text = translations[currentLanguage][key] || key;
@@ -348,7 +471,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // For organize action, always use the organize prompt format
     if (action === 'organize') {
       let promptText = getText('promptIntro', { searchTerm });
-      promptText += getText('promptOrganize');
+      // Use custom prompt if available, otherwise use default
+      let promptOrganize = customPromptOrganize || getText('promptOrganize');
+      promptText += promptOrganize;
       promptText += getText('promptBookmarkIntro');
       promptText += formattedBookmarks;
       promptText += getText('promptBookmarkOutro');
@@ -357,7 +482,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // For search action, use the search prompt format
     else {
       let promptText = getText('promptIntro', { searchTerm });
-      promptText += getText('promptSearch');
+      // Use custom prompt if available, otherwise use default
+      let promptSearch = customPromptSearch || getText('promptSearch');
+      promptText += promptSearch;
       promptText += getText('promptBookmarkIntro');
       promptText += formattedBookmarks;
       promptText += getText('promptBookmarkOutro');

@@ -15,38 +15,52 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === 'registerShortcut') {
-    registerKeyboardShortcut(message.key);
+    registerKeyboardShortcut(message.enabled);
     return true;
   }
 });
 
-// Global shortcut key
-let currentShortcutKey = 'Q';
+// Global shortcut enabled flag
+let shortcutEnabled = true;
 
-// Register keyboard shortcut (Ctrl+Key)
-function registerKeyboardShortcut(key) {
-  currentShortcutKey = key;
-  console.log(`Registered keyboard shortcut: Ctrl+${key}`);
+// Register keyboard shortcut enabled/disabled state
+function registerKeyboardShortcut(enabled) {
+  shortcutEnabled = enabled;
+  console.log(`Keyboard shortcut ${enabled ? 'enabled' : 'disabled'}: Ctrl+Q`);
 
-  // Store the shortcut key in storage
-  chrome.storage.sync.set({ 'shortcutKey': key });
+  // Store the shortcut settings in storage
+  chrome.storage.sync.set({
+    'shortcutEnabled': enabled
+  });
 }
+
+// Initialize shortcut settings
+chrome.storage.sync.get({
+  shortcutEnabled: true
+}, function(items) {
+  shortcutEnabled = items.shortcutEnabled;
+
+  if (items.shortcutEnabled) {
+    console.log('Initializing keyboard shortcut: Ctrl+Q');
+  } else {
+    console.log('Keyboard shortcut is disabled');
+  }
+});
 
 // Listen for keyboard shortcuts
 chrome.commands.onCommand.addListener((command) => {
   if (command === 'open_popup') {
-    // Open the popup
-    chrome.action.openPopup();
-  }
-});
-
-// Initialize shortcut settings
-chrome.storage.sync.get({
-  shortcutEnabled: true,
-  shortcutKey: 'Q'
-}, function(items) {
-  if (items.shortcutEnabled) {
-    registerKeyboardShortcut(items.shortcutKey);
+    // Only open the popup if shortcuts are enabled
+    chrome.storage.sync.get({
+      shortcutEnabled: true
+    }, function(items) {
+      if (items.shortcutEnabled) {
+        // Open the popup
+        chrome.action.openPopup();
+      } else {
+        console.log('Keyboard shortcut is disabled in settings');
+      }
+    });
   }
 });
 
