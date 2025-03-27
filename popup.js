@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!searchTerm) {
       statusMessage.textContent = getText('statusEmptySearch');
+      statusMessage.classList.add('status-error');
       return;
     }
 
@@ -118,10 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
     navigator.clipboard.writeText(prompt)
       .then(() => {
         statusMessage.textContent = getText('copySuccess');
+        statusMessage.classList.remove('status-error');
       })
       .catch(err => {
         console.error('Failed to copy: ', err);
         statusMessage.textContent = getText('copyFailed');
+        statusMessage.classList.remove('status-error');
       });
   }
 
@@ -159,10 +162,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update dynamic status message based on current state
     if (statusMessage.textContent.includes('準備就緒') || statusMessage.textContent.includes('Ready')) {
       statusMessage.textContent = lang.statusReady;
+      statusMessage.classList.remove('status-error');
     } else if (statusMessage.textContent.includes('正在獲取') || statusMessage.textContent.includes('Fetching')) {
       statusMessage.textContent = lang.statusFetchingBookmarks;
+      statusMessage.classList.remove('status-error');
     } else if (statusMessage.textContent.includes('書籤已準備') || statusMessage.textContent.includes('Bookmarks ready')) {
       statusMessage.textContent = lang.statusBookmarksReady;
+      statusMessage.classList.remove('status-error');
     }
   }
 
@@ -181,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to fetch all bookmarks
   function fetchAllBookmarks() {
     statusMessage.textContent = getText('statusFetchingBookmarks');
+    statusMessage.classList.remove('status-error');
 
     chrome.bookmarks.getTree(function(results) {
       formattedBookmarks = "";
@@ -203,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       statusMessage.textContent = getText('statusBookmarksReady');
+      statusMessage.classList.remove('status-error');
       console.log("Bookmarks formatted:", formattedBookmarks.substring(0, 100) + "...");
     });
   }
@@ -214,11 +222,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!searchTerm) {
       statusMessage.textContent = getText('statusEmptySearch');
+      statusMessage.classList.add('status-error');
       return;
     }
 
     if (!formattedBookmarks) {
       statusMessage.textContent = getText('statusBookmarksNotReady');
+      statusMessage.classList.remove('status-error');
       return;
     }
 
@@ -226,6 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadingIndicator.style.display = "block";
     const actionText = action === 'search' ? getText('searchAction') : getText('organizeAction');
     statusMessage.textContent = getText('statusProcessingRequest', { action: actionText });
+    statusMessage.classList.remove('status-error');
 
     // Create the prompt based on user input
     const prompt = createPrompt(searchTerm, action);
@@ -291,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Update status and hide loading indicator
       statusMessage.textContent = getText('statusOpenedAI', { service: getServiceName(service) });
+      statusMessage.classList.remove('status-error');
       loadingIndicator.style.display = "none";
     });
   }
