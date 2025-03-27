@@ -35,5 +35,13 @@
     },
     "icons": {
       "128": "icon.png"
+    },
+    "commands": {
+      "open_popup": {
+        "suggested_key": {
+          "default": "Ctrl+Q"
+        },
+        "description": "Open Bookmark AI Search"
+      }
     }
   }

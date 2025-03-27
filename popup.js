@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     zh: {
       appTitle: 'Bookmark AI Search',
       searchInputLabel: '搜尋關鍵字:',
-      searchInputPlaceholder: '輸入搜尋關鍵字 (例如: asp.net)',
+      searchInputPlaceholder: '輸入搜尋關鍵字查找關聯書籤 ',
       aiSelectLabel: '選擇 AI 服務:',
       languageSelectLabel: '語言 / Language:',
       searchButton: '搜尋',
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     en: {
       appTitle: 'Bookmark AI Search',
       searchInputLabel: 'Search Keywords:',
-      searchInputPlaceholder: 'Enter search keywords (e.g.: asp.net)',
+      searchInputPlaceholder: 'Enter search keywords (e.g.: python, machine learning)',
       aiSelectLabel: 'Select AI Service:',
       languageSelectLabel: 'Language / 語言:',
       searchButton: 'Search',

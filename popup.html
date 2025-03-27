@@ -8,50 +8,108 @@
       font-family: Arial, sans-serif;
       width: 320px;
       padding: 15px;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .app-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
     }
     h1 {
       font-size: 18px;
-      margin-bottom: 15px;
+      margin: 0;
+      color: #333;
+      flex-grow: 1;
+    }
+    .header-icons {
+      display: flex;
+      gap: 10px;
+    }
+    .icon-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: #666;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+    }
+    .icon-button:hover {
+      background-color: #e0e0e0;
       color: #333;
     }
     .search-container {
       margin-bottom: 15px;
+      background-color: white;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     #searchInput {
       width: 100%;
       padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 0;
+      transition: border-color 0.2s;
+    }
+    #searchInput:focus {
+      border-color: #4285f4;
+      outline: none;
     }
     .settings-container {
       display: flex;
       justify-content: space-between;
       margin-bottom: 15px;
+      background-color: white;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .ai-select {
-      padding: 6px;
-      border: 1px solid #ccc;
+      padding: 8px;
+      border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 14px;
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 0;
+      background-color: white;
+      transition: border-color 0.2s;
+    }
+    .ai-select:focus {
+      border-color: #4285f4;
+      outline: none;
     }
     .button-container {
       display: flex;
       gap: 10px;
+      margin-bottom: 15px;
     }
     .action-button {
       flex: 1;
       background-color: #4285f4;
       color: white;
       border: none;
-      padding: 8px 15px;
+      padding: 10px 15px;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
       text-align: center;
+      transition: background-color 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .action-button:hover {
       background-color: #3367d6;
@@ -60,11 +118,19 @@
       font-size: 14px;
       color: #666;
       margin-top: 10px;
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .loading {
       display: none;
       margin-top: 15px;
       text-align: center;
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .spinner {
       border: 3px solid #f3f3f3;
@@ -86,11 +152,93 @@
       margin-bottom: 5px;
       font-weight: bold;
       font-size: 14px;
+      color: #555;
+    }
+    /* Settings modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+    .modal-content {
+      background-color: white;
+      margin: 15px auto;
+      padding: 15px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 300px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+    .modal-body {
+      margin-bottom: 15px;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .save-button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      resize: vertical;
+    }
+    /* Help modal styles */
+    .help-content {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .help-section {
+      margin-bottom: 12px;
+    }
+    .help-title {
+      font-weight: bold;
+      margin-bottom: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>Bookmark AI Search</h1>
+  <div class="header">
+    <img src="icon.png" alt="App Icon" class="app-icon">
+    <h1>Bookmark AI Search</h1>
+    <div class="header-icons">
+      <button id="settingsButton" class="icon-button" title="設定">⚙️</button>
+      <button id="helpButton" class="icon-button" title="幫助">❓</button>
+    </div>
+  </div>
 
   <div class="search-container">
     <label for="searchInput">搜尋關鍵字:</label>

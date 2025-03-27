@@ -13,6 +13,41 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     handlePromptInjection(message.tabId, message.service, message.prompt);
     return true; // Indicates async response
   }
+
+  if (message.action === 'registerShortcut') {
+    registerKeyboardShortcut(message.key);
+    return true;
+  }
+});
+
+// Global shortcut key
+let currentShortcutKey = 'Q';
+
+// Register keyboard shortcut (Ctrl+Key)
+function registerKeyboardShortcut(key) {
+  currentShortcutKey = key;
+  console.log(`Registered keyboard shortcut: Ctrl+${key}`);
+
+  // Store the shortcut key in storage
+  chrome.storage.sync.set({ 'shortcutKey': key });
+}
+
+// Listen for keyboard shortcuts
+chrome.commands.onCommand.addListener((command) => {
+  if (command === 'open_popup') {
+    // Open the popup
+    chrome.action.openPopup();
+  }
+});
+
+// Initialize shortcut settings
+chrome.storage.sync.get({
+  shortcutEnabled: true,
+  shortcutKey: 'Q'
+}, function(items) {
+  if (items.shortcutEnabled) {
+    registerKeyboardShortcut(items.shortcutKey);
+  }
 });
 
 // Format all bookmarks in Markdown format
